@@ -1,5 +1,6 @@
 import { useContext, useState, useEffect } from "react";
 import { filterInvoices } from "../helpers/filter";
+import { getAll } from "../helpers/get";
 import InvoiceTableRow from "./InvoiceTableRow";
 import InvoiceContext from "../contexts/InvoiceContext";
 import UserContext from "../contexts/UserContext";
@@ -7,20 +8,29 @@ import CreateInvoice from "./CreateInvoice";
 import Navbar from "./Navbar";
 
 const InvoiceTable = () => {
-  const { invoices, setInvoices, error, setError } = useContext(InvoiceContext);
+  
+  const {
+    invoices,
+    setInvoices,
+    error,
+    setError,
+    currentPage,
+    invoicesPerPage
+    
+  } = useContext(InvoiceContext);
   const { user } = useContext(UserContext);
   const [selectedStatus, setSelectedStatus] = useState("Filter by status");
 
-  const fetchInvoices = async (status) => {
+  const fetchInvoices = async (status, page, limit) => {
     setError(null);
 
     try {
       let response;
 
-      if (status === "All Invoices" || !status) {
-        response = await filterInvoices();
+      if (status === "Filter by status" || !status) {
+        response = await getAll( page, limit);
       } else {
-        response = await filterInvoices({ status });
+        response = await filterInvoices({ status }, page, limit);
       }
 
       if (!response || !response.data) {
@@ -38,14 +48,18 @@ const InvoiceTable = () => {
   };
 
   useEffect(() => {
-    fetchInvoices("Filter by status");
-  }, []);
+    fetchInvoices(selectedStatus, currentPage, invoicesPerPage);
+  }, [selectedStatus, currentPage, invoicesPerPage]);
 
   const handleStatusChange = (event) => {
     const status = event.target.value;
     setSelectedStatus(status);
 
-    fetchInvoices(status === "Filter by status" ? null : status);
+    fetchInvoices(
+      status === "Filter by status" ? null : status,
+      currentPage,
+      invoicesPerPage
+    );
   };
 
   return (

@@ -51,8 +51,9 @@ exports.deleteInvoice = async (id) => {
   return invoice;
 };
 
-exports.filterInvoices = async (filter) => {
+exports.filterInvoices = async (filter, limit, offset) => {
   const validStatuses = ["DRAFT", "PENDING", "PAID"];
+  console.log(filter);
   const statusFilter = validStatuses.includes(filter.status.toUpperCase())
     ? filter.status.toUpperCase()
     : null;
@@ -62,6 +63,10 @@ exports.filterInvoices = async (filter) => {
     FROM invoices
     WHERE UPPER(invoices.status) = ${statusFilter}
     ORDER BY invoices.invoice_id
-    `;
+    ${
+      !isNaN(limit) && !isNaN(offset)
+        ? sql`LIMIT ${limit} OFFSET ${offset}`
+        : sql``
+    } `;
   return invoices;
 };

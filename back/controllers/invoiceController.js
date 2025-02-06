@@ -84,16 +84,38 @@ exports.deleteThisInvoice = async (req, res, next) => {
 
 exports.filterInvoicesByStatus = async (req, res, next) => {
   try {
-    const filter = req.query;
-    if (Object.keys(filter).length === 0) {
-      const invoices = await getInvoices();
-      res.status(200).json({
-        status: "success",
-        data: invoices,
+    let { status, page, limit } = req.query;
+
+    let filter = null;
+    page = parseInt(page, 10) || 1;
+    limit = parseInt(limit, 10) || 5;
+
+    if (isNaN(page) || page < 1 || isNaN(limit) || limit < 1) {
+      return res.status(400).json({
+        status: "error",
+        message: "Invalid page or limit values",
       });
-      return;
     }
-    const filteredInvoices = await filterInvoices(filter);
+
+    const offset = (page - 1) * limit;
+
+    if (!filter && status) {
+      filter = { status: status.trim().toUpperCase() };
+    } else if (typeof filter === "string") {
+      try {
+        filter = JSON.parse(filter);
+      } catch (error) {
+        return res.status(400).json({
+          status: "error",
+          message: "Invalid filter format",
+        });
+      }
+    }
+
+    const filteredInvoices = await filterInvoices(filter, limit, offset);
+
+    console.log("Filtered invoices:", filteredInvoices);
+
     res.status(200).json({
       status: "success",
       data: filteredInvoices,

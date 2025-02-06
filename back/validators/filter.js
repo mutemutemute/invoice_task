@@ -6,8 +6,8 @@ const validateFilter = [
     .optional()
     .isString()
     .withMessage("Status must be a string")
-    .isIn(statuses)
-    .withMessage("Status must be Draft, Pending or Paid"),
+    // .isIn(statuses)
+    // .withMessage("Status must be Draft, Pending or Paid"),
 ];
 
 module.exports = validateFilter;
