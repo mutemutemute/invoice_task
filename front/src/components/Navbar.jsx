@@ -4,6 +4,7 @@ import axios from "axios";
 import Profile from "../assets/profile.jpg";
 import { BiSolidCircleThreeQuarter } from "react-icons/bi";
 import UserContext from "../contexts/UserContext";
+import ThemeButton from "./ThemeButton";
 
 const API_URL = import.meta.env.VITE_API_URL;
 
@@ -38,11 +39,11 @@ const Navbar = () => {
   };
 
   return (
-    <aside className="w-full lg:w-20 h-16 lg:h-screen bg-gray-900 flex items-center lg:flex-col justify-between px-6 lg:py-6 fixed top-0 left-0 z-50">
+    <aside className="w-full lg:w-20 h-16 lg:h-screen bg-slate-100 dark:bg-gray-900 flex items-center lg:flex-col justify-between px-6 lg:py-6 fixed top-0 left-0 z-50">
       <div className="bg-indigo-500 w-15 h-15 rounded-lg flex items-center justify-center">
         <BiSolidCircleThreeQuarter className="text-white w-10 h-10" />
       </div>
-
+<ThemeButton />
       {user && (
         <div className="relative" onBlur={() => setIsDropdownOpen(false)}>
           <div

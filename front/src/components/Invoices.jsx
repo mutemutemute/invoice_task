@@ -57,14 +57,14 @@ const Invoices = () => {
 
   return (
     <>
-      <div className="bg-[#141625] ">
-        <div className="flex flex-col md:flex-row lg:flex-row  ">
+      <div className="dark:bg-[#141625] ">
+        <div className="flex flex-col sm:flex-row md:flex-row lg:flex-row  ">
           <Navbar />
 
           <div className="flex flex-col px-4 sm:px-8 md:px-12 lg:px-10 pt-24 lg:pt-6 w-full ">
             <div className="w-full flex flex-col md:flex-row justify-center gap-12 items-center">
               <div className="text-left">
-                <h1 className="text-white text-2xl md:text-3xl font-bold">
+                <h1 className="dark:text-white text-2xl md:text-3xl font-bold">
                   Invoices
                 </h1>
                 <h2 className="text-gray-400 text-sm md:text-base">
@@ -80,7 +80,7 @@ const Invoices = () => {
                   id="status"
                   value={selectedStatus}
                   onChange={handleStatusChange}
-                  className="border border-gray-300 rounded-md p-2 text-white mb-5"
+                  className="border border-gray-300 rounded-md p-2 dark:text-white mb-5"
                 >
                   <option value="Filter by status" className="text-black">
                     Filter by status

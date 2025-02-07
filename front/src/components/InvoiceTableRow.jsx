@@ -35,9 +35,9 @@ const InvoiceTableRow = ({ invoice }) => {
   };
 
   return (
-    <div className="bg-indigo-950 rounded-lg px-6 py-6 my-2 md:flex items-center justify-between gap-4 md:min-w-[600px]">
-      <p className="font-semibold text-gray-300">{invoice_id}</p>
-      <p className="text-sm text-gray-400">{date}</p>
+    <div className="bg-indigo-400 dark:bg-indigo-950 rounded-lg px-6 py-6 my-2 md:flex items-center justify-between gap-4 md:min-w-[600px]">
+      <p className="font-semibold  dark:text-gray-300">{invoice_id}</p>
+      <p className="text-sm text-slate-100 dark:text-gray-400">{date}</p>
 
       <p className="text-white text-sm">{customer_name}</p>
 
@@ -45,9 +45,9 @@ const InvoiceTableRow = ({ invoice }) => {
 
       <div
         className={`px-3 py-1 rounded-md text-sm font-semibold flex items-center gap-2 w-[100px]
-        ${status === "Draft" ? "bg-gray-700 text-gray-300" : ""} 
-        ${status === "Pending" ? "bg-yellow-900 text-yellow-500" : ""} 
-        ${status === "Paid" ? "bg-green-900 text-green-400" : ""}`}
+        ${status === "Draft" ? "bg-gray-300 dark:bg-gray-700 text-gray-700 dark:text-gray-300" : ""} 
+        ${status === "Pending" ? "bg-yellow-200 dark:bg-yellow-900 text-yellow-800 dark:text-yellow-500" : ""} 
+        ${status === "Paid" ? "bg-green-200 dark:bg-green-900 text-green-900 dark:text-green-400" : ""}`}
       >
         <GoDotFill />
         {status}
