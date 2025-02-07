@@ -17,6 +17,7 @@ const Invoices = () => {
   const getAllInvoices = async (page, limit) => {
     try {
       const response = await getAll(page, limit);
+
       const invoicesArray = response.data?.invoices || [];
       const totalCount = response.data?.total_count || 0;
       setInvoices({ list: invoicesArray, total: totalCount });
@@ -38,7 +39,10 @@ const Invoices = () => {
         <div className="flex overflow-x-auto sm:justify-center">
           <Pagination
             currentPage={currentPage}
-            totalPages={Math.ceil(invoices?.total / invoicesPerPage) || 1}
+            totalPages={Math.max(
+              1,
+              Math.ceil(invoices.total / invoicesPerPage)
+            )}
             onPageChange={(page) => setCurrentPage(page)}
             showIcons
           />

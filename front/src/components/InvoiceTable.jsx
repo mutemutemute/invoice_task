@@ -8,15 +8,14 @@ import CreateInvoice from "./CreateInvoice";
 import Navbar from "./Navbar";
 
 const InvoiceTable = () => {
-  
   const {
     invoices,
     setInvoices,
     error,
     setError,
     currentPage,
-    invoicesPerPage
-    
+    invoicesPerPage,
+    setCurrentPage,
   } = useContext(InvoiceContext);
   const { user } = useContext(UserContext);
   const [selectedStatus, setSelectedStatus] = useState("Filter by status");
@@ -26,22 +25,18 @@ const InvoiceTable = () => {
 
     try {
       let response;
-
       if (status === "Filter by status" || !status) {
-        response = await getAll( page, limit);
+        console.log(status === "Filter by status" || !status);
+
+        response = await getAll(page, limit);
       } else {
         response = await filterInvoices({ status }, page, limit);
       }
 
-      if (!response || !response.data) {
-        throw new Error("Invalid response from API");
-      }
+      const invoicesArray = response.data?.invoices || [];
+      const totalCount = Number(response.data?.total_count) || 0;
 
-      const invoicesList = Array.isArray(response.data)
-        ? response.data
-        : response.data.invoices || [];
-
-      setInvoices({ list: invoicesList });
+      setInvoices({ list: invoicesArray, total: totalCount });
     } catch (error) {
       setError("Failed to load invoices. Please try again.");
     }
@@ -54,12 +49,9 @@ const InvoiceTable = () => {
   const handleStatusChange = (event) => {
     const status = event.target.value;
     setSelectedStatus(status);
+    setCurrentPage(1);
 
-    fetchInvoices(
-      status === "Filter by status" ? null : status,
-      currentPage,
-      invoicesPerPage
-    );
+    setInvoices({ list: [], total: 0 });
   };
 
   return (
@@ -73,8 +65,8 @@ const InvoiceTable = () => {
               Invoices
             </h1>
             <h2 className="text-gray-400 text-sm md:text-base">
-              {invoices.list?.length
-                ? `There are ${invoices.list.length} total invoices`
+              {invoices.total > 0
+                ? `There are ${invoices.total} total invoices`
                 : "No invoices available"}
             </h2>
           </div>

@@ -68,5 +68,10 @@ exports.filterInvoices = async (filter, limit, offset) => {
         ? sql`LIMIT ${limit} OFFSET ${offset}`
         : sql``
     } `;
-  return invoices;
+  const totalInvoices =
+    await sql`SELECT COUNT(invoices.id) AS total FROM invoices
+    WHERE UPPER(invoices.status) = ${statusFilter}`;
+  const total_count = totalInvoices[0].total;
+
+  return { invoices, total_count };
 };
