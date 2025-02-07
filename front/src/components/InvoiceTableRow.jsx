@@ -35,7 +35,7 @@ const InvoiceTableRow = ({ invoice }) => {
   };
 
   return (
-    <div className="bg-indigo-950 rounded-lg px-6 py-6 my-6 md:flex items-center justify-between gap-4 md:min-w-[600px]">
+    <div className="bg-indigo-950 rounded-lg px-6 py-6 my-2 md:flex items-center justify-between gap-4 md:min-w-[600px]">
       <p className="font-semibold text-gray-300">{invoice_id}</p>
       <p className="text-sm text-gray-400">{date}</p>
 
