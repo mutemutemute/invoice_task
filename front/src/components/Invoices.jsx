@@ -4,7 +4,7 @@ import { getAll } from "../helpers/get";
 import InvoiceTable from "./InvoiceTable";
 import InvoiceContext from "../contexts/InvoiceContext";
 import UserContext from "../contexts/UserContext";
-import { Pagination } from "flowbite-react";
+import CreateInvoice from "./CreateInvoice";
 import Navbar from "./Navbar";
 
 const Invoices = () => {
@@ -54,6 +54,8 @@ const Invoices = () => {
     setCurrentPage(1);
     setInvoices({ list: [], total: 0 });
   };
+
+  const totalPages = Math.ceil(invoices.total / invoicesPerPage);
 
   return (
     <>
@@ -105,19 +107,27 @@ const Invoices = () => {
         </div>
         <div className="h-screen">
           <InvoiceTable />
-          <div className="flex overflow-x-auto sm:justify-center pb-10 pt-10">
-            <Pagination
-              currentPage={currentPage}
-              totalPages={Math.max(
-                1,
-                Math.ceil(invoices.total / invoicesPerPage)
-              )}
-              onPageChange={(page) => {
-                console.log("Page changed to:", page);
-                setCurrentPage(page);
-              }}
-              showIcons
-            />
+
+          <div className="flex justify-center items-center py-10">
+            <button
+              onClick={() => setCurrentPage((prev) => Math.max(prev - 1, 1))}
+              disabled={currentPage === 1}
+              className="px-4 py-2 mx-2 bg-gray-300 dark:bg-gray-700 rounded disabled:opacity-50"
+            >
+              Previous
+            </button>
+            <span className=" px-4">
+              Page {currentPage} of {totalPages}
+            </span>
+            <button
+              onClick={() =>
+                setCurrentPage((prev) => Math.min(prev + 1, totalPages))
+              }
+              disabled={currentPage >= totalPages}
+              className="px-4 py-2 mx-2 bg-gray-300 dark:bg-gray-700 rounded disabled:opacity-50"
+            >
+              Next
+            </button>
           </div>
         </div>
       </div>
